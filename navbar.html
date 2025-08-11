@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pothigai</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <link rel="icon" type="image" href="pothigai 2.jpg">
+  <style>
+    /* Popup forms */
+    .popup-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .popup-form h2 {
+      margin-bottom: 15px;
+    }
+
+    .popup-form input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .popup-form button {
+      width: 95%;
+      padding: 10px;
+      background: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .popup-form button:hover {
+      background: darkgreen;
+    }
+
+    .close-popup {
+      cursor: pointer;
+      color: red;
+      float: right;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav">
+      <div class="nav-header">
+        <h1>Pothigai</h1>
+
+        <div class="menu-bar" id="menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="items-cart">
+          <ul>
+            <li><a href="home.html" class="nav-link">Home</a></li>
+            <li><a href="about.html" class="nav-link">About</a></li>
+            <li><a href="menu.html" class="nav-link">Menu</a></li>
+            <li><a href="location.html" class="nav-link">Location</a></li>
+            <li><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+          <div class="box1">
+            <button id="loginBtn">Login</button>
+            <div class="cart-count">0</div>
+            <ion-icon name="cart" id="cart-icon"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="cart">
+      <div class="cart-title">Cart Items</div>
+      <div class="cart-content">
+        <div class="cart-box">
+          <img src="./assets/meals.avif" class="cart-img">
+          <div class="detailed-box">
+            <div class="cart-food-title">Meals</div>
+            <div class="price-box"></div>
+            <div class="cart-price">Rs.100</div>
+            <div class="cart-amt">Rs.100</div>
+          </div>
+          <input type="number" value="1" class="cart-quantity">
+        </div>
+        <ion-icon name="trash" class="cart-remove"></ion-icon>
+      </div>
+      <div class="total">
+        <div class="total-title">Total</div>
+        <div class="total-price">Rs.0</div>
+      </div>
+      <button class="btn-buy">Place Order</button>
+      <ion-icon name="close" id="cart-close"></ion-icon>
+    </div>
+  </header>
+
+
+  <script>
+    // Menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.querySelector(".items-cart ul");
+    menuToggle.addEventListener("click", () => {
+      menuToggle.classList.toggle("active");
+      navLinks.classList.toggle("active");
+    });
+
+    // Cart toggle
+    const btnCart = document.querySelector('#cart-icon');
+    const cart = document.querySelector('.cart');
+    const btnClose = document.querySelector('#cart-close');
+    btnCart.addEventListener('click', () => {
+      if (!localStorage.getItem('loggedInUser')) {
+        alert("Please login to view your cart!");
+        return;
+      }
+      cart.classList.add('cart-active');
+    });
+    btnClose.addEventListener('click', () => {
+      cart.classList.remove('cart-active');
+    });
+
+   
+  </script>
+</body>
+</html>

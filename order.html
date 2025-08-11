@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order & Payment Page</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff7f0; /* light orange background */
+      text-align: center;
+      padding: 20px;
+    }
+    /* Order Box */
+    .order-box {
+      background: white;
+      padding: 30px 20px;
+      margin: 20px auto;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0px 5px 15px rgba(255,140,0,0.2);
+    }
+    .order-box h2 {
+      margin-bottom: 25px;
+      font-size: 26px;
+      color: #ff6f00;
+    }
+    /* Input fields */
+    .order-box input, 
+    .order-box textarea {
+      width: 95%;
+      padding: 16px;
+      margin: 12px 0;
+      border: 2px solid #ff9800;
+      background: #fff3e0;
+      border-radius: 10px;
+      font-size: 18px;
+      outline: none;
+      transition: 0.3s;
+    }
+    .order-box input:focus,
+    .order-box textarea:focus {
+      border-color: #ff6f00;
+      box-shadow: 0px 0px 8px rgba(255,111,0,0.4);
+      background: #fff8e6;
+    }
+    /* Confirm Button */
+    .order-box button {
+      padding: 16px 20px;
+      font-size: 18px;
+      background: #ff6f00;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 95%;
+      transition: 0.3s;
+    }
+    .order-box button:hover {
+      background: #e65100;
+    }
+
+    /* Payment Box */
+    .payment-box {
+      background: white;
+      padding: 25px 20px;
+      margin: 20px auto;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0px 5px 15px rgba(255,140,0,0.2);
+    }
+    .payment-box h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #ff6f00;
+    }
+
+    /* Payment Buttons */
+    .payment-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 12px 0;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      color: white;
+      transition: 0.3s;
+    }
+    .payment-btn i {
+      font-size: 24px;
+      margin-right: 12px;
+    }
+    .gpay { background: #4285F4; }
+    .gpay:hover { background: #3367d6; }
+    .phonepe { background: #5f259f; }
+    .phonepe:hover { background: #4b1f7e; }
+    .paytm { background: #00b9f1; }
+    .paytm:hover { background: #0095c7; }
+    .cod { background: #ff6f00; }
+    .cod:hover { background: #e65100; }
+
+    .hidden { display: none; }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Order Details Form -->
+  <div class="order-box">
+    <h2>Confirm Your Order</h2>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="tel" id="mobile" placeholder="Mobile Number" required>
+    <textarea id="address" rows="3" placeholder="Delivery Address" required></textarea>
+    <button onclick="showPayment()">Confirm Order</button>
+  </div>
+
+  <!-- Payment Options (Hidden until order confirmed) -->
+  <div class="payment-box hidden" id="paymentBox">
+    <h2>Choose Payment Method</h2>
+
+    <button class="payment-btn gpay" onclick="payUPI('gpay')">
+      <i class="fab fa-google-pay"></i> Pay with Google Pay
+    </button>
+
+    <button class="payment-btn phonepe" onclick="payUPI('phonepe')">
+      <i class="fas fa-mobile-alt"></i> Pay with PhonePe
+    </button>
+
+    <button class="payment-btn paytm" onclick="payUPI('paytm')">
+      <i class="fas fa-wallet"></i> Pay with Paytm
+    </button>
+
+    <button class="payment-btn cod" onclick="cashOnDelivery()">
+      <i class="fas fa-truck"></i> Cash on Delivery
+    </button>
+  </div>
+
+  <script>
+
+// Toggle mobile menu
+document.getElementById('menu-toggle').addEventListener('click', function() {
+    document.querySelector('.nav-links').classList.toggle('show');
+});
+
+// Open cart
+document.getElementById('cart-icon').addEventListener('click', function() {
+    document.querySelector('.cart').classList.add('active');
+});
+
+// Close cart
+document.getElementById('cart-close').addEventListener('click', function() {
+    document.querySelector('.cart').classList.remove('active');
+});
+
+
+
+    function showPayment() {
+      let name = document.getElementById('name').value.trim();
+      let mobile = document.getElementById('mobile').value.trim();
+      let address = document.getElementById('address').value.trim();
+
+      if (!name || !mobile || !address) {
+        alert("Please fill in all contact details.");
+        return;
+      }
+
+      document.querySelector('.order-box').classList.add('hidden');
+      document.getElementById('paymentBox').classList.remove('hidden');
+    }
+
+    function payUPI(app) {
+      let upiID = "jhon.doe@oksbi";  
+      let name = "jhon.doe";         
+      let amount = "200";            
+      let transactionNote = "Order Payment";
+
+      let upiLink = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+
+      if (app === 'gpay') {
+        window.location.href = `tez://upi/pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+      } else if (app === 'phonepe') {
+        window.location.href = `phonepe://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+      } else if (app === 'paytm') {
+        window.location.href = `paytmmp://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+      } else {
+        window.location.href = upiLink; 
+      }
+    }
+
+    function cashOnDelivery() {
+      alert("✅ Your order has been placed with Cash on Delivery!");
+    }
+  </script>
+</body>
+</html>
