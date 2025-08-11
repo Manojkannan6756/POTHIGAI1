@@ -144,22 +144,21 @@
       <i class="fas fa-truck"></i> Cash on Delivery
     </button>
   </div>
+<script>
+// Example cart array (you can integrate with your cart system)
+let cart = [];
 
-  <script>
-// Toggle mobile menu
-document.getElementById('menu-toggle').addEventListener('click', function() {
-    document.querySelector('.nav-links').classList.toggle('show');
-});
+// Function to add product to cart
+function addToCart(name, price) {
+    cart.push({ name, price });
+    updateTotal();
+}
 
-// Open cart
-document.getElementById('cart-icon').addEventListener('click', function() {
-    document.querySelector('.cart').classList.add('active');
-});
-
-// Close cart
-document.getElementById('cart-close').addEventListener('click', function() {
-    document.querySelector('.cart').classList.remove('active');
-});
+// Update total in cart
+function updateTotal() {
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('orderAmount').textContent = "Rs." + total;
+}
 
 // Show payment box after validating user details
 function showPayment() {
@@ -180,11 +179,12 @@ function showPayment() {
 function payUPI(app) {
     let upiID = "manojkannan065@oksbi";  
     let payeeName = "Manoj Kannan";         
-    let amount = document.getElementById('orderAmount')?.value.trim() || "100"; // Default ₹100 if not entered
+    let amountText = document.getElementById('orderAmount').textContent.replace("Rs.", "").trim();
+    let amount = parseFloat(amountText) || 0;
     let transactionNote = "Order Payment";
 
-    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-        alert("⚠ Please enter a valid amount.");
+    if (amount <= 0) {
+        alert("⚠ Please add products to your cart first.");
         return;
     }
 
@@ -208,7 +208,10 @@ function payUPI(app) {
 function cashOnDelivery() {
     alert("✅ Your order has been placed with Cash on Delivery!");
 }
-</script>
 
+/* Example usage - remove when integrating */
+addToCart("Dosa", 50);
+addToCart("Idli", 40);
+</script>
 </body>
 </html>
