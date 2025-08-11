@@ -146,7 +146,6 @@
   </div>
 
   <script>
-
 // Toggle mobile menu
 document.getElementById('menu-toggle').addEventListener('click', function() {
     document.querySelector('.nav-links').classList.toggle('show');
@@ -162,44 +161,54 @@ document.getElementById('cart-close').addEventListener('click', function() {
     document.querySelector('.cart').classList.remove('active');
 });
 
+// Show payment box after validating user details
+function showPayment() {
+    let name = document.getElementById('name').value.trim();
+    let mobile = document.getElementById('mobile').value.trim();
+    let address = document.getElementById('address').value.trim();
 
-
-    function showPayment() {
-      let name = document.getElementById('name').value.trim();
-      let mobile = document.getElementById('mobile').value.trim();
-      let address = document.getElementById('address').value.trim();
-
-      if (!name || !mobile || !address) {
-        alert("Please fill in all contact details.");
+    if (!name || !mobile || !address) {
+        alert("⚠ Please fill in all contact details.");
         return;
-      }
-
-      document.querySelector('.order-box').classList.add('hidden');
-      document.getElementById('paymentBox').classList.remove('hidden');
     }
 
-    function payUPI(app) {
-      let upiID = "manojkannan@oksbi";  
-      let name = "Manoj Kannan";         
-      let amount = "200";            
-      let transactionNote = "Order Payment";
+    document.querySelector('.order-box').classList.add('hidden');
+    document.getElementById('paymentBox').classList.remove('hidden');
+}
 
-      let upiLink = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+// UPI Payment Function
+function payUPI(app) {
+    let upiID = "manojkannan@oksbi";  
+    let payeeName = "Manoj Kannan";         
+    let amount = document.getElementById('orderAmount')?.value.trim() || "100"; // Default ₹100 if not entered
+    let transactionNote = "Order Payment";
 
-      if (app === 'gpay') {
-        window.location.href = `tez://upi/pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
-      } else if (app === 'phonepe') {
-        window.location.href = `phonepe://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
-      } else if (app === 'paytm') {
-        window.location.href = `paytmmp://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
-      } else {
-        window.location.href = upiLink; 
-      }
+    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+        alert("⚠ Please enter a valid amount.");
+        return;
     }
 
-    function cashOnDelivery() {
-      alert("✅ Your order has been placed with Cash on Delivery!");
+    let encodedName = encodeURIComponent(payeeName);
+    let encodedNote = encodeURIComponent(transactionNote);
+
+    let baseLink = `upi://pay?pa=${upiID}&pn=${encodedName}&am=${amount}&cu=INR&tn=${encodedNote}`;
+
+    if (app === 'gpay') {
+        window.location.href = `tez://upi/pay?pa=${upiID}&pn=${encodedName}&am=${amount}&cu=INR&tn=${encodedNote}`;
+    } else if (app === 'phonepe') {
+        window.location.href = `phonepe://pay?pa=${upiID}&pn=${encodedName}&am=${amount}&cu=INR&tn=${encodedNote}`;
+    } else if (app === 'paytm') {
+        window.location.href = `paytmmp://pay?pa=${upiID}&pn=${encodedName}&am=${amount}&cu=INR&tn=${encodedNote}`;
+    } else {
+        window.location.href = baseLink; 
     }
-  </script>
+}
+
+// Cash on Delivery
+function cashOnDelivery() {
+    alert("✅ Your order has been placed with Cash on Delivery!");
+}
+</script>
+
 </body>
 </html>
